@@ -1,3 +1,22 @@
+# PG Testing Utils for NodeJS Projects
+
+This a NPM module for use in testing in Productive Gains.  
+Version: 1.0.0
+
+# Summary of set up
+
+var testingUtils = require('pg-testing-utils');
+testingUtils.imageUtils.functionName();
+
+# Dependencies
+
+To use this module to its fullest you need to install Imagemagick on your system.
+
+# How to run tests
+npm test
+
+### Contribution guidelines ###
+
 # Git Process
 
 This project uses the Gitflow process, so no development happens in master.  Only work done branched off of master is
@@ -6,32 +25,7 @@ for making final changes to a release.  More details are in the link below.
 
 https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
 
-# README #
-
-This README would normally document whatever steps are necessary to get your application up and running.
-
-### What is this repository for? ###
-
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
-
-### How do I get set up? ###
-
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
 
 ### Who do I talk to? ###
 
-* Repo owner or admin
-* Other community or team contact
+* Created by Joe Bailey
