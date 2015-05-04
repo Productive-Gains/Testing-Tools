@@ -17,6 +17,9 @@
     "selenium",
     "wiremock"
   ],
+  "bin": {
+    "init-pg-testing-utils.js": "./bin/init-pg-testing-utils.js"
+  },
   "author": "Joe Bailey",
   "license": "Copyright",
   "dependencies": {
