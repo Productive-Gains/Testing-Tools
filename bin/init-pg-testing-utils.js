@@ -14,6 +14,9 @@ var request = http.get(wiremockJarPath + wiremockJarFileName, function(response)
     if (!fs.existsSync(downloadDir)){
         fs.mkdirSync(downloadDir);
     }
-    var file = fs.createWriteStream(downloadDir + wiremockJarFileName);
-    response.pipe(file);
+    var wiremockJarFileAbsolute = downloadDir + wiremockJarFileName;
+    if (!fs.existsSync(wiremockJarFileAbsolute)) {
+        var file = fs.createWriteStream();
+        response.pipe(file);
+    }
 });
