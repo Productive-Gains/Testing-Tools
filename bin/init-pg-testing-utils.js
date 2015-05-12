@@ -10,13 +10,14 @@ var platform = process.platform,
 
 console.log('Downloading: ' + wiremockJarPath + wiremockJarFileName);
 
-var request = http.get(wiremockJarPath + wiremockJarFileName, function(response) {
-    if (!fs.existsSync(downloadDir)){
-        fs.mkdirSync(downloadDir);
-    }
-    var wiremockJarFileAbsolute = downloadDir + wiremockJarFileName;
-    if (!fs.existsSync(wiremockJarFileAbsolute)) {
-        var file = fs.createWriteStream();
+var wiremockJarFileAbsolute = downloadDir + wiremockJarFileName;
+
+if (!fs.existsSync(wiremockJarFileAbsolute)) {
+    http.get(wiremockJarPath + wiremockJarFileName, function (response) {
+        if (!fs.existsSync(downloadDir)) {
+            fs.mkdirSync(downloadDir);
+        }
+        var file = fs.createWriteStream(wiremockJarFileAbsolute);
         response.pipe(file);
-    }
-});
+    });
+}
