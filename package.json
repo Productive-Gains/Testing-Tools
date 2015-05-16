@@ -27,5 +27,15 @@
     "node-fs": "^0.1.7",
     "q": "~1.2.0",
     "selenium-webdriver": "2.45.1"
+  },
+  "devDependencies": {
+    "chai": "^2.3.0",
+    "chai-as-promised": "^5.0.0",
+    "chai-fs": "git+https://github.com/jenius/chai-fs.git",
+    "mocha": "^2.2.5",
+    "mockery": "^1.4.0",
+    "rewire": "^2.3.3",
+    "rimraf": "^2.3.3",
+    "sinon": "^1.14.1"
   }
 }
