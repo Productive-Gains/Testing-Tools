@@ -2,9 +2,10 @@
  * Created by jlb on 5/17/15.
  */
 
-/* globals describe, it, mockery, before, beforeEach, afterEach, after */
+/* globals describe, it, mockery, before, expect, beforeEach, afterEach, after */
 
-var nodeFs = require('node-fs'),
+var nock = require('nock'),
+    nodeFs = require('node-fs'),
     rimraf = require('rimraf'),
     tmpFolder = __dirname + '/../tmp/test/tmp',
     testFolder = __dirname + '/../tmp/test/test';
@@ -89,4 +90,54 @@ describe('Wiremock-Utils', function () {
             wireMockUtils.setDelay(mapping, delay).should.deep.equal(expected);
         });
     });
+
+    describe('shutdownProxy', function(){
+        it('should send a valid shutdown command via HTTP', function(){
+            var proxyResponse = nock('http://localhost:8080')
+                .post('/__admin/shutdown')
+                .reply(200, '');
+            wireMockUtils.shutdownProxy();
+            //noinspection BadExpressionStatementJS
+            expect(proxyResponse.done()).to.be.undefined; // jshint ignore:line
+        });
+    });
+    describe('reset', function(){
+        it('should send a valid rest command via HTTP', function(){
+            var proxyResponse = nock('http://localhost:8080')
+                .post('/__admin/reset')
+                .reply(200, '');
+            wireMockUtils.reset();
+            //noinspection BadExpressionStatementJS
+            expect(proxyResponse.done()).to.be.undefined; // jshint ignore:line
+        });
+    });
+    describe('resetToDefault', function(){
+        it('should send a valid resetToDefault command via HTTP', function(){
+            var proxyResponse = nock('http://localhost:8080')
+                .post('/__admin/mappings/reset')
+                .reply(200, '');
+            wireMockUtils.resetToDefault();
+            //noinspection BadExpressionStatementJS
+            expect(proxyResponse.done()).to.be.undefined; // jshint ignore:line
+        });
+    });
+    describe('sendMapping', function(){
+        it('should send a valid sendMapping command via HTTP', function(done){
+            var mappingBody = {},
+                mappingResponse = {},
+                reqBody = {},
+                proxyResponse = nock('http://localhost:8080')
+                    .post('/__admin/mappings/new')
+                    .reply(200, function(uri, requestBody) {
+                        reqBody = requestBody;
+                        return undefined;
+                    });
+            wireMockUtils.sendMapping(mappingBody, mappingResponse);
+            //noinspection BadExpressionStatementJS
+            expect(proxyResponse.done()).to.be.undefined; // jshint ignore:line
+            reqBody.should.equal('{"response":{}}');
+            done();
+        });
+    });
+
 });

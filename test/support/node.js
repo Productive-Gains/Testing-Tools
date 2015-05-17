@@ -6,7 +6,6 @@
 
 var chai = require("chai");
 var chaiAsPromised = require("chai-as-promised");
-var chaiFs = require('chai-fs');
 var Q = require("q");
 
 var sinon = require('sinon'),
@@ -14,11 +13,9 @@ var sinon = require('sinon'),
     //rewire = require("rewire");
 
 chai.should();
-chai.use(chaiFs);
 chai.use(chaiAsPromised);
 
 global.chaiAsPromised = chaiAsPromised;
-global.chaiFs = chaiFs;
 global.expect = chai.expect;
 global.AssertionError = chai.AssertionError;
 global.Assertion = chai.Assertion;
