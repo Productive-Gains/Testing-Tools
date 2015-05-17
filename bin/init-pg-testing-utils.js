@@ -8,11 +8,10 @@ var platform = process.platform,
     wiremockJarPath = 'http://repo1.maven.org/maven2/com/github/tomakehurst/wiremock/1.55/',
     wiremockJarFileName = 'wiremock-1.55-standalone.jar';
 
-console.log('Downloading: ' + wiremockJarPath + wiremockJarFileName);
-
 var wiremockJarFileAbsolute = downloadDir + wiremockJarFileName;
 
 if (!fs.existsSync(wiremockJarFileAbsolute)) {
+    console.log('Downloading: ' + wiremockJarPath + wiremockJarFileName);
     http.get(wiremockJarPath + wiremockJarFileName, function (response) {
         if (!fs.existsSync(downloadDir)) {
             fs.mkdirSync(downloadDir);
@@ -20,4 +19,6 @@ if (!fs.existsSync(wiremockJarFileAbsolute)) {
         var file = fs.createWriteStream(wiremockJarFileAbsolute);
         response.pipe(file);
     });
+} else {
+    console.log(wiremockJarFileName + ' is already installed, so no need to download it.');
 }
