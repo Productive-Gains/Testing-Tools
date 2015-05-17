@@ -140,4 +140,40 @@ describe('Wiremock-Utils', function () {
         });
     });
 
+    describe('globalMappingDelay', function() {
+        it('should send the proper JSON via HTTP', function(done){
+            var delay = 10,
+                expectedDelay = 10000,
+                reqBody = {},
+                proxyResponse = nock('http://localhost:8080')
+                    .post('/__admin/settings')
+                    .reply(200, function(uri, requestBody) {
+                        reqBody = requestBody;
+                        return undefined;
+                    });
+            wireMockUtils.globalMappingDelay(delay);
+            //noinspection BadExpressionStatementJS
+            expect(proxyResponse.done()).to.be.undefined; // jshint ignore:line
+            reqBody.should.equal('{"fixedDelay":' + expectedDelay +'}');
+            done();
+        });
+    });
+    describe('socketDelay', function() {
+        it('should send the proper JSON via HTTP', function(done){
+            var delay = 10,
+                expectedDelay = 10000,
+                reqBody = {},
+                proxyResponse = nock('http://localhost:8080')
+                    .post('/__admin/socket-delay')
+                    .reply(200, function(uri, requestBody) {
+                        reqBody = requestBody;
+                        return undefined;
+                    });
+            wireMockUtils.socketDelay(delay);
+            //noinspection BadExpressionStatementJS
+            expect(proxyResponse.done()).to.be.undefined; // jshint ignore:line
+            reqBody.should.equal('{"milliseconds":' + expectedDelay +'}');
+            done();
+        });
+    });
 });
