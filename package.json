@@ -5,8 +5,8 @@
   "description": "Testing utilities for Productive Gains' projects",
   "main": "index.js",
   "scripts": {
-    "postinstall": "npm install jshint -g",
-    "pretest": "jshint index.js lib/ test/",
+    "checkstyle": "./node_modules/.bin/jscs .",
+    "pretest": "./node_modules/.bin/jshint index.js lib/ test/",
     "test": "mocha"
   },
   "repository": {
@@ -34,6 +34,8 @@
     "chai": "^2.3.0",
     "chai-as-promised": "^5.0.0",
     "chai-fs": "git+https://github.com/jenius/chai-fs.git",
+    "jscs": "^1.13.1",
+    "jshint": "^2.7.0",
     "mocha": "^2.2.5",
     "mockery": "^1.4.0",
     "rewire": "^2.3.3",

@@ -1,0 +1,92 @@
+/**
+ * Created by jlb on 5/17/15.
+ */
+
+/* globals describe, it, mockery, before, beforeEach, afterEach, after */
+
+var nodeFs = require('node-fs'),
+    rimraf = require('rimraf'),
+    tmpFolder = __dirname + '/../tmp/test/tmp',
+    testFolder = __dirname + '/../tmp/test/test';
+
+var wireMockUtils;
+
+describe('Wiremock-Utils', function () {
+    before(function (done) {
+        rimraf(testFolder, function (err) {
+            if (err) {
+                throw err;
+            }
+            rimraf(tmpFolder, function (err) {
+                if (err) {
+                    throw err;
+                }
+                nodeFs.mkdir(testFolder, 511, true, function (err) {
+                    if (err) {
+                        throw err;
+                    }
+                    nodeFs.mkdir(tmpFolder, 511, true, function (err) {
+                        if (err) {
+                            throw err;
+                        }
+                        done();
+                    });
+                });
+            });
+        });
+
+        mockery.enable({
+            warnOnReplace: false,
+            warnOnUnregistered: false
+        }); // Enable mockery at the start of your test suite
+    });
+
+    beforeEach(function () {
+        mockery.registerAllowable('path');                    // Allow some modules to be loaded normally
+        mockery.registerMock('child_process', process);    // Register others to be replaced with our stub
+        mockery.registerAllowable('../lib/wiremock-utils', true); // Allow our module under test to be loaded normally as well
+        wireMockUtils = require(__dirname + '/../lib/wiremock-utils.js')();            // Load your module under test
+    });
+
+    afterEach(function () {
+        //sandbox.verifyAndRestore(); // Verify all Sinon mocks have been honored
+        mockery.deregisterAll();    // Deregister all Mockery mocks from node's module cache
+    });
+
+    after(function () {
+        mockery.disable(); // Disable Mockery after tests are completed
+    });
+
+    describe('EMPTY_RESPONSE', function () {
+        it('should have the proper wiremock setting', function () {
+            wireMockUtils.EMPTY_RESPONSE.should.deep.equal({'fault': 'EMPTY_RESPONSE'});
+        });
+    });
+    describe('GARBAGE_DATA_RESPONSE', function () {
+        it('should have the proper wiremock setting', function () {
+            wireMockUtils.GARBAGE_DATA_RESPONSE.should.deep.equal({'fault': 'RANDOM_DATA_THEN_CLOSE'});
+        });
+    });
+    describe('setDelay', function () {
+        it('should return a modified mapping with a delay in the response section', function () {
+            var delay = 10,
+                mapping = {
+                    response: {}
+                },
+                expected = {
+                    response: {
+                        fixedDelayMilliseconds: 10000
+                    }
+                };
+            wireMockUtils.setDelay(mapping, delay).should.deep.equal(expected);
+        });
+        it('should return a modified mapping with a delay', function () {
+            var delay = 10,
+                mapping = {},
+                expected = {
+                    fixedDelayMilliseconds: 10000
+                };
+            wireMockUtils.setDelay(mapping, delay).should.deep.equal(expected);
+        });
+    });
+});
