@@ -10,7 +10,7 @@ var chaiFs = require('chai-fs');
 var Q = require("q");
 
 var sinon = require('sinon'),
-    mockery = require('mockery');
+    mock = require('mockery');
     //rewire = require("rewire");
 
 chai.should();
@@ -30,5 +30,5 @@ global.defer = Q.defer;
 global.waitAll = Q.all;
 
 global.sinon = sinon;
-global.mockery = mockery;
+global.mockery = mock;
 //global.rewire = rewire;

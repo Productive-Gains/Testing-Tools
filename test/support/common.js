@@ -3,6 +3,8 @@
  */
 "use strict";
 
+/* globals it */
+
 // Note: this file is used both in the Node and browser tests.
 
 (function () {

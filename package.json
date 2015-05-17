@@ -5,7 +5,9 @@
   "description": "Testing utilities for Productive Gains' projects",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "postinstall": "npm install jshint -g",
+    "pretest": "jshint index.js lib/ test/",
+    "test": "mocha"
   },
   "repository": {
     "type": "git",

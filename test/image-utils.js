@@ -2,6 +2,9 @@
  * Created by jlb on 5/16/15.
  */
 
+/* globals describe, it, expect, mockery, defer, before, beforeEach, afterEach, after */
+
+
 var fs = require('fs'),
     nodeFs = require('node-fs'),
     path = require('path'),
@@ -16,12 +19,12 @@ var imageUtils;
 
 describe('Image-Utils', function () {
     var easyImage = {
-        info: function (fileName) {
+        info: function (fileName) { // jshint ignore:line
             var deferred = defer();
             deferred.resolve({width: 900});
             return deferred.promise;
         },
-        crop: function (obj) {
+        crop: function (obj) {  // jshint ignore:line
             var deferred = defer();
             deferred.resolve({path: __dirname + '/resources/testCropScreenShot.png'});
             return deferred.promise;
@@ -52,11 +55,11 @@ describe('Image-Utils', function () {
                                 value: {
                                     width: 900
                                 }
-                            })
+                            });
                         }
-                    }
+                    };
                 }
-            }
+            };
         }
     };
     var element = {
@@ -66,7 +69,7 @@ describe('Image-Utils', function () {
                     x: 0,
                     y: 0
                 }
-            })
+            });
         },
         getSize: function () {
             return new promise.when({
@@ -74,7 +77,7 @@ describe('Image-Utils', function () {
                     width: 100,
                     height: 100
                 }
-            })
+            });
         }
     };
 
@@ -86,7 +89,7 @@ describe('Image-Utils', function () {
     };
 
     var crypto = {
-        randomBytes: function (howMany) {
+        randomBytes: function (howMany) {  // jshint ignore:line
             return [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
         }
     };
@@ -94,16 +97,24 @@ describe('Image-Utils', function () {
 
     before(function (done) {
         rimraf(testFolder, function (err) {
-            if (err) throw err;
+            if (err) {
+                throw err;
+            }
             rimraf(tmpFolder, function (err) {
-                if (err) throw err;
-                nodeFs.mkdir(testFolder, 511, true, function(err){
-                    if (err) throw err;
-                    nodeFs.mkdir(tmpFolder, 511, true, function(err) {
-                        if (err) throw err;
-                        done()
-                    })
-                })
+                if (err) {
+                    throw err;
+                }
+                nodeFs.mkdir(testFolder, 511, true, function (err) {
+                    if (err) {
+                        throw err;
+                    }
+                    nodeFs.mkdir(tmpFolder, 511, true, function (err) {
+                        if (err) {
+                            throw err;
+                        }
+                        done();
+                    });
+                });
             });
         });
 
@@ -132,19 +143,6 @@ describe('Image-Utils', function () {
     after(function () {
         mockery.disable(); // Disable Mockery after tests are completed
     });
-    describe('yearToSecondFormat', function () {
-        it('should be in a valid format for file systems', function () {
-            var d = new Date();
-            var yyyy = d.getFullYear().toString(),
-                mm = d.getMonth().toString(),
-                dd = d.getDate().toString(),
-                hh = d.getHours().toString(),
-                mi = d.getMinutes().toString(),
-                ss = d.getSeconds().toString(),
-                formattedDate = yyyy + '-' + mm + '-' + dd + '-' + hh + '-' + mi + '-' + ss;
-            expect(d.yearToSecondFormat()).to.equal(formattedDate);
-        })
-    });
 
     describe('getBrowserName', function () {
         it('should return chrome for a browser name', function (done) {
@@ -155,7 +153,7 @@ describe('Image-Utils', function () {
             var err = new Error('I failed');
             webDriver.browserName = err;
             expect(imageUtils.getBrowserName(webDriver)).to.eventually.equal(err).notify(done);
-        })
+        });
     });
 
     describe('createReferenceImageForElement', function () {
@@ -164,8 +162,12 @@ describe('Image-Utils', function () {
                 subFeatureName = 'subTest';
             expect(imageUtils.createReferenceImageForElement(webDriver, element, featureName, subFeatureName).then(function (fileName) {
                 fs.exists(fileName, function (exists) {
-                    (exists) ? done() : done(false);
-                })
+                    if (exists) {
+                        done();
+                    } else {
+                        done(false);
+                    }
+                });
             }));
         });
     });
@@ -174,21 +176,25 @@ describe('Image-Utils', function () {
         it('should compare screen shot with reference image', function (done) {
             var featureName = 'test',
                 subFeatureName = 'subTest';
-            expect(imageUtils.compareReferenceImageWithElementScreenShot(element, webDriver, featureName, subFeatureName, 0)).to.eventually.have.property('comparisonNumber').equal(0).notify(done);
+            expect(imageUtils.compareReferenceImageWithElementScreenShot(element, webDriver, featureName, subFeatureName, 0))
+                .to.eventually.have.property('comparisonNumber').equal(0).notify(done);
         });
         it('should keep images on failure', function (done) {
             var featureName = 'test',
                 subFeatureName = 'subTest';
             comparisonValue = '10';
             webDriver.browserName = 'chrome';
-            fs.createReadStream(__dirname + '/resources/testCropScreenShot.png').pipe(fs.createWriteStream(path.join(tmpFolder, 'unit_test_bbbbbbbbbbbbbbbbbbbb_compare.png')));
-            expect(imageUtils.compareReferenceImageWithElementScreenShot(element, webDriver, featureName, subFeatureName, 0)).to.eventually.have.property('comparisonNumber').equal(10).notify(done);
-        })
+            fs.createReadStream(__dirname + '/resources/testCropScreenShot.png')
+                .pipe(fs.createWriteStream(path.join(tmpFolder, 'unit_test_bbbbbbbbbbbbbbbbbbbb_compare.png')));
+            expect(imageUtils.compareReferenceImageWithElementScreenShot(element, webDriver, featureName, subFeatureName, 0))
+                .to.eventually.have.property('comparisonNumber').equal(10).notify(done);
+        });
     });
 
-    describe('takeScreenShot', function(done){
-        it('should take a picture and put it in a specific location', function(done){
-            expect(imageUtils.takeScreenShot(webDriver)).to.eventually.equal(path.normalize(tmpFolder) + '/screenshot_bbbbbbbbbbbbbbbbbbbb.png').notify(done);
+    describe('takeScreenShot', function () {
+        it('should take a picture and put it in a specific location', function (done) {
+            expect(imageUtils.takeScreenShot(webDriver))
+                .to.eventually.equal(path.normalize(tmpFolder) + '/screenshot_bbbbbbbbbbbbbbbbbbbb.png').notify(done);
         });
     });
 });
