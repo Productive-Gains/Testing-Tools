@@ -5,7 +5,9 @@
   "description": "Testing utilities for Productive Gains' projects",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "checkstyle": "./node_modules/.bin/jscs .",
+    "pretest": "./node_modules/.bin/jshint index.js lib/ test/",
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -27,5 +29,18 @@
     "node-fs": "^0.1.7",
     "q": "~1.2.0",
     "selenium-webdriver": "2.45.1"
+  },
+  "devDependencies": {
+    "chai": "^2.3.0",
+    "chai-as-promised": "^5.0.0",
+    "chai-fs": "git+https://github.com/jenius/chai-fs.git",
+    "jscs": "^1.13.1",
+    "jshint": "^2.7.0",
+    "mocha": "^2.2.5",
+    "mockery": "^1.4.0",
+    "nock": "^2.0.1",
+    "rewire": "^2.3.3",
+    "rimraf": "^2.3.3",
+    "sinon": "^1.14.1"
   }
 }
