@@ -8,7 +8,6 @@
 , "disallowEmptyBlocks": true
 , "disallowMixedSpacesAndTabs": true
 , "disallowSpaceAfterObjectKeys": true
-, "disallowCommaBeforeLineBreak": false
 , "disallowTrailingWhitespace": true
 , "disallowSpacesInCallExpression": true
 , "disallowTrailingComma": true
@@ -32,6 +31,6 @@
 , "requireSpaceBeforeBinaryOperators": [ "+", "-", "/", "*", "=", "==", "===", "!=", "!==" ]
 , "requireSpaceAfterBinaryOperators": [ "+", "-", "/", "*", "=", "==", "===", "!=", "!==" ]
 , "requireSpacesInFunctionExpression": { "beforeOpeningCurlyBrace": true }
-, requireSpaceBetweenArguments: true
+, "requireSpaceBetweenArguments": true
 , "requireSpacesInForStatement": true
 }
